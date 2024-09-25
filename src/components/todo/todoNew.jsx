@@ -1,23 +1,31 @@
+import { useState } from "react"
 
 const TodoNew = (props) => {
     const {addNewTodo} = props
     // addNewTodo("Pham dung")// fire
 
+    const [valueInput, setValueInput] = useState("eric")
+
     const handelOnClick = () => {
-        alert('Click me')
+        console.log('>> valueInput :', valueInput)
     }
 
     const handelOnChange = (name) => {
-        console.log('>>> handelOnChange', name)
+        setValueInput(name)
     }
 
     return (
-        <div className="todo-new">
-            <input onChange={(event) => {handelOnChange(event.target.value)}} type="text"/>
-            <button 
-                onClick={handelOnClick}
-            >Add</button>
-        </div>
+        <>
+            <div className="todo-new">
+                <input onChange={(event) => {handelOnChange(event.target.value)}} type="text"/>
+                <button 
+                    onClick={handelOnClick}
+                >Add</button>
+            </div>
+            <div>
+                My is = {valueInput}
+            </div>
+        </>
     )
 }
 
