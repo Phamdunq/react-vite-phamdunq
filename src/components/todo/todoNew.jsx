@@ -4,7 +4,7 @@ const TodoNew = (props) => {
     const {addNewTodo} = props
     // addNewTodo("Pham dung")// fire
 
-    const [valueInput, setValueInput] = useState("eric")
+    const [valueInput, setValueInput] = useState("phamdunq")
 
     const handelOnClick = () => {
         setValueInput(addNewTodo)
@@ -26,9 +26,6 @@ const TodoNew = (props) => {
                 <button 
                     onClick={handelOnClick}
                 >Add</button>
-            </div>
-            <div>
-                My is = {valueInput}
             </div>
         </>
     )
