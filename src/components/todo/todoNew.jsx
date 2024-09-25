@@ -8,6 +8,7 @@ const TodoNew = (props) => {
 
     const handelOnClick = () => {
         setValueInput(addNewTodo)
+        setValueInput("")
     }
 
     const handelOnChange = (name) => {
@@ -17,7 +18,11 @@ const TodoNew = (props) => {
     return (
         <>
             <div className="todo-new">
-                <input onChange={(event) => {handelOnChange(event.target.value)}} type="text"/>
+                <input 
+                    onChange={(event) => {handelOnChange(event.target.value)}} 
+                    type="text"
+                    value={valueInput}
+                    />
                 <button 
                     onClick={handelOnClick}
                 >Add</button>
