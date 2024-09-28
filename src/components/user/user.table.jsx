@@ -1,4 +1,6 @@
-import { Space, Table, Tag } from "antd";
+import { DeleteOutlined, EditOutlined } from "@ant-design/icons";
+import { Flex, Space, Table, Tag } from "antd";
+import UpdateUserModal from "./update.user.modal";
 
 const UserTable = (props) => {
   const { dataUsers } = props;
@@ -7,6 +9,9 @@ const UserTable = (props) => {
     {
       title: "Id",
       dataIndex: "_id",
+      render: (_, record) => {
+        return <a href="#">{record._id}</a>;
+      },
     },
     {
       title: "Full Name",
@@ -15,6 +20,18 @@ const UserTable = (props) => {
     {
       title: "Email",
       dataIndex: "email",
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: (_, record) => (
+        <>
+          <div style={{ display: "flex", gap: "30px" }}>
+            <EditOutlined style={{ cursor: "pointer" }} />
+            <DeleteOutlined style={{ cursor: "pointer" }} />
+          </div>
+        </>
+      ),
     },
   ];
 
@@ -42,7 +59,12 @@ const UserTable = (props) => {
   //   },
   // ];
 
-  return <Table columns={columns} dataSource={dataUsers} rowKey={"_id"} />;
+  return (
+    <>
+      <Table columns={columns} dataSource={dataUsers} rowKey={"_id"} />
+      <UpdateUserModal />
+    </>
+  );
 };
 
 export default UserTable;

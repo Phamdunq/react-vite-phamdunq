@@ -20,7 +20,7 @@ const UserForm = (props) => {
         description: "Tao user thanh cong",
       });
       resetAndCloseModal();
-      await loadUser()
+      await loadUser();
     } else {
       console.log("Check user:", res.data);
     }
