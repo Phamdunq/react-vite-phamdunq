@@ -1,15 +1,21 @@
 import { Input, Modal, notification } from "antd";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { createUserApi } from "../../services/api.services";
 
-
-const UpdateUserModal = () => {
+const UpdateUserModal = (props) => {
+  const [id, setId] = useState("");
   const [fullName, setFullName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
 
-  const [isModalOpen, setIsModalOpen] = useState(true);
+  const { isModalUpdateOpen, setIsModalUpdateOpen, dataUpdate, setDataUpdate } = props;
+
+  useEffect(() => {
+    if (dataUpdate) {
+      setId(dataUpdate._id);
+      setFullName(dataUpdate.fullName);
+      setPhoneNumber(dataUpdate.phone);
+    }
+  }, [dataUpdate]);
 
   const handelSubmitButton = async () => {
     const res = await createUserApi(fullName, email, password, phoneNumber);
@@ -19,24 +25,25 @@ const UpdateUserModal = () => {
         description: "Tao user thanh cong",
       });
       resetAndCloseModal();
-    //   await loadUser()
+      //   await loadUser()
     } else {
       console.log("Check user:", res.data);
     }
   };
 
   const resetAndCloseModal = () => {
-    setIsModalOpen(false);
+    setId("");
+    setIsModalUpdateOpen(false);
     setFullName("");
-    setEmail("");
-    setPassword("");
     setPhoneNumber("");
+    setDataUpdate(null)
+
   };
   return (
     <Modal
       title="Update a User"
-      okText="Luu"
-      open={isModalOpen}
+      okText="Save"
+      open={isModalUpdateOpen}
       onOk={() => {
         handelSubmitButton();
       }}
@@ -47,29 +54,15 @@ const UpdateUserModal = () => {
     >
       <div>
         <div>
+          <span>Id</span>
+          <Input value={id} disabled />
+        </div>
+        <div>
           <span>Full Name</span>
           <Input
             value={fullName}
             onChange={(event) => {
               setFullName(event.target.value);
-            }}
-          />
-        </div>
-        <div>
-          <span>Email</span>
-          <Input
-            value={email}
-            onChange={(event) => {
-              setEmail(event.target.value);
-            }}
-          />
-        </div>
-        <div>
-          <span>Password</span>
-          <Input.Password
-            value={password}
-            onChange={(event) => {
-              setPassword(event.target.value);
             }}
           />
         </div>
