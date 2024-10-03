@@ -27,6 +27,13 @@ const updateUserApi = (_id, fullName, phoneNumber) => {
     )
 }
 
+const deleteUserApi = (id) => {
+    const URL_BACKEND = `/api/v1/user/${id}`
+    return (
+        axios.delete(URL_BACKEND)
+    )
+}
+
 const fetchAllUSerApi = () => {
     const URL_BACKEND = "/api/v1/user"
     return (
@@ -37,5 +44,6 @@ const fetchAllUSerApi = () => {
 export {
     createUserApi,
     updateUserApi,
-    fetchAllUSerApi
+    fetchAllUSerApi,
+    deleteUserApi
 }
