@@ -1,11 +1,12 @@
-import { Link, NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { Menu } from "antd";
 import {
   AuditOutlined,
   HomeOutlined,
+  SettingOutlined,
   UsergroupAddOutlined,
 } from "@ant-design/icons";
-import { useState } from "react";
+import { Children, lazy, useState } from "react";
 
 const Header = () => {
   const [current, setCurrent] = useState("mail");
@@ -29,6 +30,22 @@ const Header = () => {
       label: <Link to={"/books"}>Books</Link>,
       key: "books",
       icon: <AuditOutlined />,
+    },
+    {
+      label: 'Cài đặt',
+      key: 'setting',
+      icon: <SettingOutlined />,
+      children: [
+        {
+          label: <Link to={"/login"}>Đăng nhập</Link>,
+          key: "setting:1"
+          
+        },
+        {
+          label: <Link to={"/register"}>Đăng ký</Link>,
+          key: "setting:2"
+        },
+      ],
     },
   ];
 
