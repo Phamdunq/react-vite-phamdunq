@@ -1,13 +1,19 @@
-import { Button, Drawer } from "antd";
+import { Button, Drawer, notification } from "antd";
 import { useState } from "react";
+import { handleUploadFileApi, updateUserAvatarApi } from "../../services/api.services";
 
 const ViewUserDetail = (props) => {
-  const { dataDetail, setDataDetail, isDetailOpen, setIsDetailOpen } = props;
+  const { dataDetail, 
+    setDataDetail, 
+    isDetailOpen, 
+    setIsDetailOpen,
+    loadUser
+   } = props;
 
   const [selectedFile, setSelectedFile] = useState();
   const [preview, setPreview] = useState();
 
-  const handelUploadFile = (event) => {
+  const handleUploadFile = (event) => {
     if (!event.target.files || event.target.files.length === 0) {
       setSelectedFile(null);
       setPreview(null);
@@ -21,6 +27,36 @@ const ViewUserDetail = (props) => {
       setPreview(URL.createObjectURL(file));
     }
   };
+
+  const handleUpdateUserAvatar = async() => {
+    const resUpload = await handleUploadFileApi(selectedFile, "avatar")
+    if(resUpload.data) {
+      const newAvatar = resUpload.data.fileUploaded
+      const resUploadAvatar = await updateUserAvatarApi(newAvatar, dataDetail._id, dataDetail.fullName, dataDetail.phone)
+      if(resUploadAvatar.data) {
+        setIsDetailOpen(false)
+        setSelectedFile(null)
+        setPreview(null)
+        await loadUser()
+        notification.success({
+          message: "update user Avatar",
+          description: "cap nhat avatar thanh cong"
+        })
+      } else {
+        notification.error({
+          message: "Error update user Avatar",
+          description: JSON.stringify(resUploadAvatar.message)
+        })
+      }
+    } else {
+      notification.error({
+        message: "Error upload file",
+        description: JSON.stringify(resUpload.message)
+      })
+      return
+    }
+
+  }
 
   return (
     <>
@@ -79,14 +115,16 @@ const ViewUserDetail = (props) => {
                 hidden
                 //onChange={handelUploadFile}
                 onChange={(event) => {
-                  handelUploadFile(event);
+                  handleUploadFile(event);
                 }}
               />
             </div>
             {preview && (
+              <>
               <div
                 style={{
                   marginTop: "10px",
+                  marginBottom: "10px",
                   height: "100px",
                   width: "150px",
                   border: "1px solid #ccc",
@@ -101,6 +139,8 @@ const ViewUserDetail = (props) => {
                   src={preview}
                 />
               </div>
+              <Button type="primary" onClick={() => {handleUpdateUserAvatar()}}>Save</Button>
+              </>
             )}
           </>
         ) : (
