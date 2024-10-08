@@ -57,7 +57,7 @@ const ViewUserDetail = (props) => {
     }
 
   }
-
+  
   return (
     <>
       <Drawer
