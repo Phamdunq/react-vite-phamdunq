@@ -1,19 +1,33 @@
-import { Button, Col, Divider, Form, Input, message, notification, Row } from "antd";
+import {
+  Button,
+  Col,
+  Divider,
+  Form,
+  Input,
+  message,
+  notification,
+  Row,
+} from "antd";
 import { Link, useNavigate } from "react-router-dom";
 import { loginApi } from "../services/api.services";
-import { useState } from "react";
+import { useContext, useState } from "react";
+import { AuthContext } from "../components/context/auth.context";
 
 const LoginPage = () => {
   const [form] = Form.useForm();
   const navigate = useNavigate();
-const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const { setUser } = useContext(AuthContext);
+
 
   const onFinish = async (value) => {
-    setLoading(true)
+    setLoading(true);
     console.log("check value:", value);
     const res = await loginApi(value.email, value.password);
     if (res.data) {
       message.success("Đăng nhập thành công");
+      localStorage.setItem("access_token", res.data.access_token);
+      setUser(res.data.user)
       navigate("/");
     } else {
       notification.error({
@@ -21,7 +35,7 @@ const [loading, setLoading] = useState(false)
         description: JSON.stringify(res.message),
       });
     }
-    setLoading(false)
+    setLoading(false);
   };
 
   return (
@@ -80,7 +94,7 @@ const [loading, setLoading] = useState(false)
             }}
           >
             <Button
-            loading={loading}
+              loading={loading}
               type="primary"
               onClick={() => {
                 form.submit();
