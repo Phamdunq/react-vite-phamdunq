@@ -1,19 +1,17 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App.jsx'
-import './index.css'
-import {
-  createBrowserRouter,
-  RouterProvider,
-} from "react-router-dom"
-import LoginPage from './pages/login.jsx'
-import RegisterPage from './pages/register.jsx'
-import UserPage from './pages/user.jsx'
-import BockPage from './pages/book.jsx'
-import './styles/global.css'
-import TodoApp from './components/todo/todoApp.jsx'
-import ErrorPage from './pages/error.jsx'
-import { AuthWrapper } from './components/context/auth.context.jsx'
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App.jsx";
+import "./index.css";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import LoginPage from "./pages/login.jsx";
+import RegisterPage from "./pages/register.jsx";
+import UserPage from "./pages/user.jsx";
+import BockPage from "./pages/book.jsx";
+import "./styles/global.css";
+import TodoApp from "./components/todo/todoApp.jsx";
+import ErrorPage from "./pages/error.jsx";
+import { AuthWrapper } from "./components/context/auth.context.jsx";
+import PrivateRouter from "./pages/private.router.jsx";
 
 const router = createBrowserRouter([
   {
@@ -23,26 +21,30 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <TodoApp />
+        element: <TodoApp />,
       },
       {
         path: "/users",
-        element: <UserPage />
+        element: <UserPage />,
       },
       {
         path: "/books",
-        element: <BockPage />
-      }
-    ]
+        element: (
+          <PrivateRouter>
+            <BockPage />
+          </PrivateRouter>
+        ),
+      },
+    ],
   },
   {
     path: "/login",
-    element: <LoginPage/>
+    element: <LoginPage />,
   },
   {
     path: "/register",
-    element: <RegisterPage />
-  }
+    element: <RegisterPage />,
+  },
 ]);
 
 ReactDOM.createRoot(document.getElementById("root")).render(
@@ -51,4 +53,4 @@ ReactDOM.createRoot(document.getElementById("root")).render(
     <RouterProvider router={router} />
   </AuthWrapper>
   // </React.StrictMode>
-)
+);

@@ -1,8 +1,10 @@
 import { Link } from "react-router-dom";
 import { Menu } from "antd";
 import {
+  AliwangwangOutlined,
   AuditOutlined,
   HomeOutlined,
+  LoginOutlined,
   SettingOutlined,
   UsergroupAddOutlined,
 } from "@ant-design/icons";
@@ -13,10 +15,8 @@ const Header = () => {
   const [current, setCurrent] = useState("mail");
 
   const {user} = useContext(AuthContext);
-  console.log("check user: ", user)
 
   const onClick = (e) => {
-    console.log("click ", e);
     setCurrent(e.key);
   };
 
@@ -36,21 +36,24 @@ const Header = () => {
       key: "books",
       icon: <AuditOutlined />,
     },
-    {
-      label: "Cài đặt",
-      key: "setting",
-      icon: <SettingOutlined />,
-      children: [
-        {
-          label: <Link to={"/login"}>Đăng nhập</Link>,
-          key: "setting:1",
-        },
-        {
-          label: <Link to={"/register"}>Đăng ký</Link>,
-          key: "setting:2",
-        },
-      ],
-    },
+    ...(!user.id ? [{
+      label: <Link to={"/login"}>Đăng nhập</Link>,
+      key: "login",
+      icon: <LoginOutlined />
+    }]:[]),
+
+    ...(user.id ? [{
+        label: `Welcome ${user.fullName}`,
+        key: "setting",
+        icon: <AliwangwangOutlined />,
+        children: [
+          {
+            label: <Link to={"/login"}>Đăng xuất</Link>,
+            key: "logout",
+          },
+        ],
+    }]:[])
+    
   ];
 
   return (
